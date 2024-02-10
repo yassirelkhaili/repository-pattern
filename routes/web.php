@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get("/", [UserController::class,"index"])->name("index");
+Route::get("/users/store", function () {return view('users.store');});
+Route::resource("users", UserController::class);
 
-Route::get('dashboard', function() {
-    return view('dashboard');
-});
+//routes:
+// Method       URI                     Action        Route Name
+// GET          /users                  index         users.index
+// GET          /users/create           create        users.create
+// POST         /users                  store         users.store
+// GET          /users/{user}           show          users.show
+// GET          /users/{user}/edit      edit          users.edit
+// PUT/PATCH    /users/{user}           update        users.update
+// DELETE       /users/{user}           destroy       users.destroy

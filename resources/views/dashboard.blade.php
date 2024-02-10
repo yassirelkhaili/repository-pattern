@@ -1,33 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <title>Repository Pattern Live Coding</title>
-</head>
-<body>
+<x-app-layout>
+    @session("success")
+    <p class="text-success">{{ session()->get("success") }}</p>
+    @endsession
+    <a href="/users/store"><button class="btn btn-primary">Add User</button></a>
     <section>
         <table class="table-dark table">
   <thead>
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">firstname</th>
-      <th scope="col">lastname</th>
-      <th scope="col">actions</th>
+      <th scope="col">Id</th>
+      <th scope="col">Firstname</th>
+      <th scope="col">Email</th>
+      <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
+   @forelse ($users as $user)
+   <tr>
+    <th scope="row">{{ $user->id }}</th>
+    <td>{{ $user->name }}</td>
+    <td>{{ $user->email }}</td>
+    <td class="d-flex gap-2">
+      <a href="{{route("users.update", $user->id)}}"><button type="button" class="btn btn-success">Edit</button></a>
+      <form action="{{route("users.destroy", $user->id)}}" method="POST">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+    </td>
+  </tr>
+   @empty
+       <h1>No data</h1>
+   @endforelse
   </tbody>
 </table>
     </section>
-</body>
-</html>
+</x-app-layout>
